@@ -209,10 +209,8 @@ def accounts():
     total_pago = 0
     total_a_pagar = 0
     for conta in contas:
-        if conta['status'] in ['Pago', 'Parcial']:
-            total_pago += Decimal(conta['valor_pago'])
-        elif conta['status'] in ['Pendente', 'Vencida']:
-            total_a_pagar += Decimal(conta['valor_parcela']) + Decimal(conta['juros'])
+        total_pago += Decimal(conta['valor_pago'])
+        total_a_pagar += Decimal(conta['valor_a_receber'])
 
         conta['valor_parcela'] = locale.currency(conta['valor_parcela'], grouping=True, symbol=True)
         conta['valor_pago'] = locale.currency(conta['valor_pago'], grouping=True, symbol=True)
