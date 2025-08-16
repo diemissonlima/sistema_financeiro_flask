@@ -1,0 +1,68 @@
+/* === Modal de Fornecedores (tema azul escuro) === */
+
+/* Caixa do modal */
+#modalFornecedores .modal-content {
+    background-color: #0f172a !important; /* Azul bem escuro */
+    color: #e2e8f0 !important;
+    border-radius: 12px !important;
+    border: 1px solid #1e293b !important;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8) !important;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Animação de entrada */
+@keyframes modalSlideIn {
+    from { transform: translateY(-15px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Cabeçalho do modal */
+#modalFornecedores .modal-header {
+    border-bottom: 1px solid #1e293b !important;
+    background-color: #1e293b !important;
+    color: #60a5fa !important; /* Azul claro no título */
+}
+
+/* Campo de busca */
+#modalFornecedores #buscaFornecedor {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #e2e8f0 !important;
+    font-size: 1rem;
+    padding-left: 2.2rem;
+    border-radius: 8px;
+}
+
+#modalFornecedores #buscaFornecedor::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Ícone no campo de busca */
+#modalFornecedores #buscaFornecedor {
+    background-image: url("data:image/svg+xml,%3Csvg fill='%2394a3b8' xmlns='http://www.w3.org/2000/svg' height='16' width='16' viewBox='0 0 512 512'%3E%3Cpath d='M505 442.7L405.3 343c28.3-34.9 45.3-79.4 45.3-128C450.6 96.5 354.1 0 233.8 0S17 96.5 17 215.8s96.5 215.8 215.8 215.8c48.6 0 93.1-17 128-45.3l99.7 99.7c4.7 4.7 10.9 7 17 7s12.3-2.3 17-7C514.4 467.3 514.4 452 505 442.7zM233.8 382.3c-91.8 0-166.5-74.7-166.5-166.5S142 49.3 233.8 49.3s166.5 74.7 166.5 166.5-74.7 166.5-166.5 166.5z'/%3E%3C/svg%3E");
+    background-size: 16px;
+    background-position: 10px center;
+    background-repeat: no-repeat;
+}
+
+/* Tabela */
+#modalFornecedores thead {
+    background-color: #1e3a8a !important; /* Azul forte */
+    color: #fff !important;
+}
+
+#modalFornecedores tbody tr {
+    transition: all 0.2s ease-in-out;
+}
+
+#modalFornecedores tbody tr:hover {
+    background-color: #1d4ed8 !important; /* Azul hover */
+    transform: scale(1.01);
+}
+
+/* Linhas da tabela */
+#modalFornecedores td,
+#modalFornecedores th {
+    padding: 0.75rem;
+    vertical-align: middle;
+}

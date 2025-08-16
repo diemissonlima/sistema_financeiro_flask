@@ -1,0 +1,14 @@
+body {
+    padding: 20px;
+    background-color: #f8f9fa;
+}
+.card {
+    margin-bottom: 20px;
+}
+.form-control:disabled {
+    background-color: #e9ecef;
+}
+.btn-receber {
+    float: right;
+    margin-top: 20px;
+}

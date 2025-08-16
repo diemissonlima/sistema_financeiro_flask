@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Contas a Pagar{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-file-invoice-dollar me-2"></i>Contas a Pagar</h1>
+    <a href="{{ url_for('new_account') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Nova Conta
+    </a>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <input type="text" id="filtroDescricao" class="form-control" placeholder="Filtrar por Descrição">
+      </div>
+      <div class="col-md-3">
+        <input type="text" id="filtroFornecedor" class="form-control" placeholder="Filtrar por Fornecedor">
+      </div>
+      <div class="col-md-2">
+        <select id="filtroStatus" class="form-select">
+          <option value="">Todos os Status</option>
+          <option value="Pendente">Pendente</option>
+          <option value="Parcial">Parcial</option>
+          <option value="Recebido">Recebido</option>
+          <option value="Vencida">Vencida</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <input type="date" id="filtroDataDe" class="form-control" placeholder="Venc. De">
+      </div>
+      <div class="col-md-2">
+        <input type="date" id="filtroDataAte" class="form-control" placeholder="Venc. Até">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Total á Receber</h5>
+                        <h3 class="mb-0">{{ total_a_receber }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-arrow-down fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Total Recebido</h5>
+                        <h3 class="mb-0">{{ total_recebido }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-arrow-up fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if contas %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor</th>
+                        <th>Valor Recebido</th>
+                        <th>Vencimento</th>
+                        <th>Fornecedor</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in contas %}
+
+                    <tr class="{{ 'table-primary' if account.status in ['Pendente', 'Parcial'] else 'table-success' }}">
+                        <td>
+                            {{ account.descricao }}
+                        </td>
+                        <td>
+                            <strong class="text-success">
+                                {{ account.valor_parcela }}
+                            </strong>
+                        </td>
+                        <td>
+                            <strong class="text-success">
+                                {{ account.valor_pago }}
+                            </strong>
+                        </td>
+                        <td>
+                            {{ account.data_vencimento.strftime('%d/%m/%Y') }}
+                        </td>
+                        <td>
+                            {{ account.razao_social or '-' }}
+                        </td>
+                        <td>
+                            <span style="display: inline-block; width: 90px; height: 30px; text-align: center; line-height: 23px;"
+                                  class="badge bg-{{ 'warning' if account.status == 'Pendente' else
+                             'primary' if account.status == 'Parcial' else
+                              'danger' if account.status == 'Vencida' else 'success' }}">
+                                {% if account.status == 'Pendente' %}
+                                <i class="fas fa-clock me-1"></i><strong>Pendente</strong>
+                                {% elif account.status == 'Pago' %}
+                                    {% if account.tipo_conta == 'pagar' %}
+                                <i class="fas fa-check me-2"></i><strong>Pago</strong>
+                                    {% else %}
+                                <i class="fas fa-check me-1"></i><strong>Recebido</strong>
+                                    {% endif %}
+                                {% elif account.status == 'Parcial' %}
+                                <i class="fas fa-clock me-2"></i><strong>Parcial</strong>
+                                {% else %}
+                                <i class="fas fa-check me-1"></i><strong>Recebido</strong>
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            {% if account.status == 'Pendente' or account.status == 'Parcial' %}
+                                <a href="{{ url_for('pay_account', account_id=account.id, tipo_conta='receber') }}"
+                                   class="btn btn-sm btn-{{ 'success' if account.tipo_conta == 'receber' else 'primary' }}">
+                                    <i class="fas fa-check me-1"></i>
+                                    <strong>{{ 'Pagar' if account.tipo_conta == 'pagar' else 'Receber' }}</strong>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-file-invoice-dollar fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted">Nenhuma conta cadastrada</h4>
+            <p class="text-muted mb-4">Comece criando seu primeiro lançamento</p>
+            <a href="{{ url_for('new_account') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>Criar Primeiro Lançamento
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/accounts.js') }}"></script>
+{% endblock %}

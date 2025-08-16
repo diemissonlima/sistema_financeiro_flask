@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Fornecedores{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-truck me-2"></i>Fornecedores</h1>
+    <a href="{{ url_for('new_supplier') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Novo Fornecedor
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if suppliers %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Telefone</th>
+                        <th>CNPJ</th>
+                        <th>Endereço</th>
+                        <th>Número</th>
+                        <th>Bairro</th>
+                        <th>Cadastrado em</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for supplier in suppliers %}
+                    <tr>
+                        <td>
+                            {{ supplier.razao_social }}
+                        </td>
+                        <td>
+                            {% if supplier.telefone %}
+                                <span>{{ supplier.telefone }}</span>
+                            {% else %}
+                                <span class="text-muted">-</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ supplier.cnpj if supplier.cnpj else supplier.cpf }}</td>
+                        <td>{{ supplier.endereco if supplier.endereco else '-' }}</td>
+                        <td>{{ supplier.numero if supplier.numero else 'S/N' }}</td>
+                        <td>{{ supplier.bairro if supplier.bairro else '-' }}</td>
+                        <td>
+                            <small>
+                                {{ supplier.data_cadastro if supplier.data_cadastro else '-' }}
+                            </small>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary me-1">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="submit" class="btn btn-warning me-1">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-truck fa-4x text-muted mb-4"></i>
+            <h4 class="text-muted">Nenhum fornecedor cadastrado</h4>
+            <p class="text-muted mb-4">Comece cadastrando seu primeiro fornecedor</p>
+            <a href="{{ url_for('new_supplier') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-plus me-2"></i>Cadastrar Primeiro Fornecedor
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

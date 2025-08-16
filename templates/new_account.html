@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}Novo Lançamento{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/new_account.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-plus-circle me-2"></i>Nova Conta</h1>
+    <a href="{{ url_for('accounts') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-12 mb-6">
+                            <label class="form-label">Fornecedor</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalFornecedores">
+                                  <i class="fas fa-search"></i>
+                                </button>
+                                <input type="hidden" class="form-control" id="fornecedorId" name="fornecedor_id">
+                                <input type="text" class="form-control" id="fornecedor" name="fornecedor" readonly>
+                              </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mt-3">
+                            <label for="description" class="form-label">Descrição *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-file-alt"></i></span>
+                                <input type="text" class="form-control" id="description" name="description"
+                                       placeholder="Ex: Pagamento de fornecedor, Venda de produto..." required>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mt-3">
+                            <label for="data_lancamento" class="form-label">Data de Lançamento *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                                <input type="date" class="form-control" id="data_lancamento" name="data_lancamento" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3 mt-3">
+                            <label for="type" class="form-label">Tipo *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
+                                <select class="form-select" id="type" name="type" required>
+                                    <option value="">-</option>
+                                    <option value="pagar">Conta a Pagar</option>
+                                    <option value="receber">Conta a Receber</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mt-3">
+                            <label for="forma_pagamento" class="form-label">Forma de Pagamento *</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
+                                <select class="form-select" id="forma_pagamento" name="forma_pagamento" required>
+                                    <option value="">-</option>
+                                    <option value="a_vista">Á Vista</option>
+                                    <option value="a_prazo">Á Prazo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3 mt-3">
+                            <label for="amount" class="form-label">Valor *</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" class="form-control" id="amount" name="amount"
+                                       step="0.01" min="0" placeholder="0,00" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Área das Parcelas (escondida inicialmente) -->
+                    <div id="area-parcelas" style="display: block; margin-top: 10px;">
+                        <div id="form-parcelas">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 mt-3">
+                                    <label for="type" class="form-label">Quantidade Parcelas</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
+                                        <input type="number" class="form-control" id="quantidade_parcelas" name="quantidade_parcelas"
+                                               placeholder="Quantidade">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3 mt-3">
+                                    <label for="type" class="form-label">Intervalo Dias</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-exchange-alt"></i></span>
+                                        <input type="number" class="form-control" id="intervalo_dias" name="intervalo_dias"
+                                               placeholder="Intervalo dias entre as parcelas">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3 mt-5">
+                                    <button type="submit" class="btn btn-warning">
+                                        <i class="fas fa-note-sticky me-2"></i>Gerar Parcelas
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                      <h5>Parcelas:</h5>
+                      <table class="table table-sm">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Valor</th>
+                            <th>Vencimento</th>
+                          </tr>
+                        </thead>
+                        <div id="hidden-inputs-container"></div>
+                        <tbody id="tabela-parcelas">
+                          <!-- Parcelas geradas dinamicamente pelo JS -->
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                    <div class="alert alert-info mt-4">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Dica:</strong> Contas a pagar representam valores que você deve pagar, 
+                        enquanto contas a receber são valores que você deve receber.
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-times me-2"></i>Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Salvar Lançamento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de fornecedores -->
+<div class="modal fade" id="modalFornecedores" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content bg-dark text-white rounded-4 shadow-lg border border-secondary">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold" id="modalLabel">Selecione um Fornecedor</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <input type="text" id="buscaFornecedor" class="form-control form-control-lg mb-3 bg-secondary text-white border-0 shadow-sm" placeholder="🔍 Buscar fornecedor...">
+
+        <div class="table-responsive">
+          <table class="table table-hover table-dark align-middle mb-0">
+            <thead class="table-secondary text-dark">
+              <tr>
+                <th>Nome</th>
+                <th>CNPJ</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for fornecedor in suppliers %}
+              <tr style="cursor: pointer;"
+                  onclick="selecionarFornecedor('{{ fornecedor.codigo }}', '{{ fornecedor.razao_social }}')">
+                <td>{{ fornecedor.razao_social }}</td>
+                <td>{{ fornecedor.cnpj }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/new_account.js') }}"></script>
+{% endblock %}

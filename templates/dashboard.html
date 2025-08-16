@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h1>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Contas a Pagar</h5>
+                        <h3 class="mb-0">{{ total_pagar }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-arrow-down fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Contas a Receber</h5>
+                        <h3 class="mb-0">{{ total_receber }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-arrow-up fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="card-title">Fornecedores</h5>
+                        <h3 class="mb-0">{{ total_suppliers }}</h3>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fas fa-truck fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Lançamentos Recentes a Pagar</h5>
+            </div>
+            <div class="card-body">
+                {% if contas_recentes_pagar %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor Parcela</th>
+                                <th>Vencimento</th>
+                                <th>Fornecedor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for account in contas_recentes_pagar %}
+                            <tr>
+                                <td>{{ account.descricao }}</td>
+                                <td>{{ account.valor_parcela }}</td>
+                                <td>{{ account.data_vencimento.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ account.razao_social or '-' }}</td>
+                                <td>
+                                    <span style="width: 85px" class="badge bg-{{ 'secondary' if account.status == 'Pendente' else
+                                     'primary' if account.status == 'Parcial' else
+                                     'danger' if account.status == 'Vencida' else 'success' }}">
+                                        {{ account.status|title }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Nenhum lançamento encontrado</p>
+                    <a href="{{ url_for('new_account') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Criar Primeiro Lançamento
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-clock me-2"></i>Lançamentos Recentes a Receber</h5>
+            </div>
+            <div class="card-body">
+                {% if contas_recentes_receber %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor Parcela</th>
+                                <th>Vencimento</th>
+                                <th>Fornecedor</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for account in contas_recentes_receber %}
+                            <tr>
+                                <td>{{ account.descricao }}</td>
+                                <td>{{ account.valor_parcela }}</td>
+                                <td>{{ account.data_vencimento.strftime('%d/%m/%Y') }}</td>
+                                <td>{{ account.razao_social or '-' }}</td>
+                                <td>
+                                    <span style="width: 85px" class="badge bg-{{ 'secondary' if account.status == 'Pendente' else
+                                     'primary' if account.status == 'Parcial' else
+                                     'danger' if account.status == 'Vencida' else 'success' }}">
+                                        {{ 'Recebido' if account.status == 'Pago' else account.status|title  }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Nenhum lançamento encontrado</p>
+                    <a href="{{ url_for('new_account') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>Criar Primeiro Lançamento
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-plus-circle fa-3x text-primary mb-3"></i>
+                <h5>Nova Conta</h5>
+                <p class="text-muted">Adicione um novo lançamento de conta a pagar ou receber</p>
+                <a href="{{ url_for('new_account') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Criar Lançamento
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                <h5>Novo Fornecedor</h5>
+                <p class="text-muted">Cadastre um novo fornecedor no sistema</p>
+                <a href="{{ url_for('new_supplier') }}" class="btn btn-primary">
+                    <i class="fas fa-user-plus me-2"></i>Cadastrar Fornecedor
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

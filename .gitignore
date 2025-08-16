@@ -1,0 +1,35 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+*.egg
+*.egg-info/
+.eggs/
+
+# ---- Ambientes virtuais ----
+venv/
+.venv/
+env/
+.env/
+ENV/
+env.bak/
+venv.bak/
+
+# ---- Configs locais ----
+*.env
+instance/
+.DS_Store
+*.log
+
+# ---- IDEs/Editors ----
+.vscode/
+.idea/
+*.swp
+
+# ---- Outros arquivos ----
+deploy railway.txt
+sistema.sql
+.rar
