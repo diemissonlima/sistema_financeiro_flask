@@ -317,3 +317,56 @@ def obter_contas_pagar(tipo_consulta, tabela='', id_conta=0, id_fornecedor=0):
         print(f"erro ao recuperar dados: {error}")
 
         return None
+
+
+def atualizar_juros():
+    conn = get_connection()
+
+    lista_contas = obter_contas_pagar('todos', 'contas_pagar')
+
+    with conn.cursor() as cursor:
+        for conta in lista_contas:
+            juros = 0
+            if conta['status'] in ['Parcial', 'Vencida']:
+                juros = utils.calcular_juros(conta['valor_parcela'], conta['data_vencimento'])
+
+            if juros:
+                lista_baixa = consultar_baixa(conta['id'])
+
+                if lista_baixa:
+                    ultima_baixa = lista_baixa[-1]
+
+                    print(f'juros antes: {juros}')
+                    juros = utils.calcular_juros(conta['valor_a_receber'], ultima_baixa['data_recebimento'])
+                    print(f'juros depois: {juros}')
+
+                    total_parcela = Decimal(conta['valor_a_receber']) + Decimal(juros)
+
+                    query = 'UPDATE contas_pagar SET juros = %s, valor_a_receber = %s WHERE id = %s'
+
+                    data = juros, total_parcela, conta['id']
+
+                    cursor.execute(query, data)
+                    conn.commit()
+
+
+def consultar_baixa(id_contas_pagar):
+    conn = get_connection()
+
+    try:
+        with conn.cursor() as cursor:
+            query = "SELECT * FROM contas_pagar_recebimento WHERE id_contas_pagar = %s"
+
+            data = id_contas_pagar
+
+            cursor.execute(query, data)
+            if cursor.rowcount > 0:
+                lista_baixas = cursor.fetchall()
+
+                return lista_baixas
+
+            return None
+
+    except pymysql.MySQLError as error:
+        print(f'Erro ao consultar baixa: {error}')
+        return None
