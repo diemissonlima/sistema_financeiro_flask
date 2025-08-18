@@ -204,6 +204,8 @@ def accounts():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
+    database.atualizar_juros()
+
     contas = database.obter_contas_pagar('todos', 'contas_pagar')
 
     total_pago = 0
