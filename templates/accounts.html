@@ -123,16 +123,24 @@
                                 {% endif %}
                             </span>
                         </td>
-                        <td>
-                            {% if account.status in ['Pendente', 'Parcial', 'Vencida'] %}
-                                <a href="{{ url_for('pay_account', account_id=account.id, tipo_conta='pagar') }}"
-                                   class="btn btn-sm btn-{{ 'success' if account.tipo_conta == 'pagar' else 'primary' }}"
-                                style="width: 85px">
-                                    <i class="fas fa-check me-1"></i>
-                                    Baixar
+                        <div>
+                            <td>
+                                {% if account.status in ['Pendente', 'Parcial', 'Vencida'] %}
+                                    <a href="{{ url_for('pay_account', account_id=account.id, tipo_conta='pagar') }}"
+                                       class="btn btn-sm btn-{{ 'success' if account.tipo_conta == 'pagar' else 'primary' }} me-1"
+                                    style="width: 95px">
+                                        <i class="fas fa-check me-1"></i>
+                                        Baixar
+                                    </a>
+                                {% endif %}
+
+                                <a href="#" class="btn btn-sm btn-warning" style="width: 95px">
+                                    <i class="fas fa-eye"></i>
+                                    Detalhes
                                 </a>
-                            {% endif %}
-                        </td>
+                            </td>
+                        </div>
+
                     </tr>
                     {% endfor %}
                 </tbody>
