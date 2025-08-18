@@ -57,6 +57,9 @@ def login():
                 session['user_id'] = user['id']
                 session['username'] = user['nome']
                 flash('Login realizado com sucesso!', 'success')
+
+                atualizar_parcela_vencida()
+                database.atualizar_juros()
                 return redirect(url_for('dashboard'))
             else:
                 flash('Senha inválida!', 'error')
