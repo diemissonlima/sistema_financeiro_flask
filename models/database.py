@@ -337,9 +337,7 @@ def atualizar_juros():
                 if lista_baixa:
                     ultima_baixa = lista_baixa[-1]
 
-                    print(f'juros antes: {juros}')
                     juros = utils.calcular_juros(conta['valor_a_receber'], ultima_baixa['data_recebimento'])
-                    print(f'juros depois: {juros}')
 
                     total_parcela = Decimal(conta['valor_a_receber']) + Decimal(juros)
 

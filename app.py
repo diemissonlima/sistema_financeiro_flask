@@ -41,7 +41,7 @@ def index():
     return redirect(url_for('dashboard'))
 
 
-@app.route('/login', methods=['GET', 'POST'])  # login implementado
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -66,7 +66,7 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/register', methods=['GET', 'POST'])  # cadastro usuario implementado
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -91,7 +91,7 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/dashboard')  # parcialmente implementado
+@app.route('/dashboard')
 def dashboard():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -154,7 +154,7 @@ def dashboard():
                            contas_recentes_receber=contas_recentes_receber)
 
 
-@app.route('/suppliers')  # listagem de fornecedores implementado
+@app.route('/suppliers')
 def suppliers():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -168,7 +168,7 @@ def suppliers():
     return render_template('suppliers.html', suppliers=fornecedores)
 
 
-@app.route('/suppliers/new', methods=['GET', 'POST'])  # implementado
+@app.route('/suppliers/new', methods=['GET', 'POST'])
 def new_supplier():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -363,9 +363,7 @@ def pay_account(account_id, tipo_conta):
 
         if float(recebido) >= float(juros):
             recebido = float(recebido) - float(juros)
-            print(f'juros pago antes: {conta[0]["juros_pago"]}')
             conta[0]['juros_pago'] += Decimal(juros)
-            print(f'juros pago depois: {conta[0]["juros_pago"]}')
             juros = 0.0
 
         conn = database.get_connection()
