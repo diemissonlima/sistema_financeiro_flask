@@ -99,13 +99,10 @@ def dashboard():
     conn = database.get_connection()
 
     with conn.cursor() as cursor:
-        cursor.execute('SELECT SUM(valor_parcela) - SUM(valor_pago) AS total FROM contas_pagar '
+        cursor.execute('SELECT SUM(valor_a_receber) as valor_pagar FROM contas_pagar '
                        f'WHERE id_usuario = {session["user_id"]} AND status IN ("Pendente", "Parcial", "Vencida")')
 
         total_pagar = cursor.fetchone()
-
-        if total_pagar['total'] is None:
-            total_pagar['total'] = 0
 
         cursor.execute('SELECT SUM(valor_parcela) - SUM(valor_pago) AS total FROM contas_receber '
                        f'WHERE id_usuario = {session["user_id"]} AND status IN ("Pendente", "Parcial")')
@@ -147,7 +144,7 @@ def dashboard():
         contas_recentes_receber = contas_receber[:]
 
     return render_template('dashboard.html',
-                           total_pagar=locale.currency(total_pagar['total'], grouping=True, symbol=True),
+                           total_pagar=locale.currency(total_pagar['valor_pagar'], grouping=True, symbol=True),
                            total_receber=locale.currency(total_receber['total'], grouping=True, symbol=True),
                            total_suppliers=total_suppliers['count'],
                            contas_recentes_pagar=contas_recentes_pagar,

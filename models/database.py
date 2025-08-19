@@ -34,7 +34,6 @@ def criar_database():
                 status ENUM('Pendente', 'Pago', 'Parcial', 'Vencida', 'Inativa') DEFAULT 'Pendente',
                 id_fornecedor INT NOT NULL,
                 numero_parcela INT(10) NOT NULL,
-                data_pagamento DATE NULL,
                 valor_parcela DECIMAL(10, 2) NOT NULL,
                 desconto DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 multa DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
