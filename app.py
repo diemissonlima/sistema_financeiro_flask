@@ -28,7 +28,6 @@ def atualizar_parcela_vencida():
                            "WHERE status = 'Pendente' AND data_vencimento < CURDATE()")
 
             conn.commit()
-            print("Parcelas atualizadas com sucesso")
 
     except pymysql.MySQLError as error:
         print(f"Erro ao atualizar parcela vencida: {error}")
@@ -37,10 +36,8 @@ def atualizar_parcela_vencida():
 @app.route('/')
 def index():
     if 'user_id' not in session:
-        atualizar_parcela_vencida()
         return redirect(url_for('login'))
 
-    atualizar_parcela_vencida()
     return redirect(url_for('dashboard'))
 
 
@@ -220,6 +217,7 @@ def accounts():
         conta['valor_parcela'] = locale.currency(conta['valor_parcela'], grouping=True, symbol=True)
         conta['valor_pago'] = locale.currency(conta['valor_pago'], grouping=True, symbol=True)
         conta['juros'] = locale.currency(conta['juros'], grouping=True, symbol=True)
+        conta['juros_pago'] = locale.currency(conta['juros_pago'], grouping=True, symbol=True)
 
     return render_template('accounts.html', contas=contas,
                            total_pago=locale.currency(total_pago, grouping=True, symbol=True),
@@ -350,6 +348,7 @@ def pay_account(account_id, tipo_conta):
         desconto = request.form['valor_desconto'].replace(',', '.')
         multa = request.form['valor_multa'].replace(',', '.')
         juros = request.form['valor_juros'].replace(',', '.')
+        juros_pago = conta[0]['juros_pago']
         recebido = request.form['valor_recebido'].replace(',', '.')
         saldo = request.form['valor_saldo'].replace(',', '.')
         observacao = request.form['observacao']
@@ -364,6 +363,9 @@ def pay_account(account_id, tipo_conta):
 
         if float(recebido) >= float(juros):
             recebido = float(recebido) - float(juros)
+            print(f'juros pago antes: {conta[0]["juros_pago"]}')
+            conta[0]['juros_pago'] += Decimal(juros)
+            print(f'juros pago depois: {conta[0]["juros_pago"]}')
             juros = 0.0
 
         conn = database.get_connection()
@@ -378,10 +380,10 @@ def pay_account(account_id, tipo_conta):
             cursor.execute(query, data)
             conn.commit()
 
-            query = (f"UPDATE contas_{tipo_conta} SET valor_pago = %s, status = %s, juros = %s, valor_a_receber = %s "
-                     f"WHERE id = %s")
+            query = (f"UPDATE contas_{tipo_conta} SET valor_pago = %s, status = %s, juros = %s, juros_pago = %s, "
+                     f"valor_a_receber = %s WHERE id = %s")
 
-            data = float(conta[0]['valor_pago']), conta[0]['status'], juros, saldo, account_id
+            data = float(conta[0]['valor_pago']), conta[0]['status'], juros, float(conta[0]['juros_pago']), saldo, account_id
 
             cursor.execute(query, data)
             conn.commit()

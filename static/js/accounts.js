@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const td = linha.querySelectorAll("td");
 
       const textoDescricao = td[0]?.innerText.toLowerCase();
-      const textoFornecedor = td[5]?.innerText.toLowerCase();
-      const textoStatus = td[6]?.innerText;
+      const textoFornecedor = td[6]?.innerText.toLowerCase();
+      const textoStatus = td[7]?.innerText;
       const textoData = td[3]?.innerText; // formato: dd/mm/yyyy
 
       let mostra = true;

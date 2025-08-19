@@ -1,6 +1,7 @@
 import pymysql
 from flask import session
 from pymysql import cursors
+from scripts import utils
 from decimal import Decimal
 
 
@@ -243,8 +244,8 @@ def obter_contas_pagar(tipo_consulta, tabela='', id_conta=0, id_fornecedor=0):
                         "SELECT contas_pagar.id, fornecedores.codigo AS id_fornecedor, fornecedores.razao_social, "
                         "contas_pagar.descricao, contas_pagar.valor, contas_pagar.data_lancamento, contas_pagar.data_vencimento, "
                         "contas_pagar.`status`, contas_pagar.valor_pago, contas_pagar.valor_parcela, contas_pagar.numero_parcela,"
-                        "contas_pagar.multa, contas_pagar.juros, contas_pagar.desconto, contas_pagar.tipo_conta, "
-                        "contas_pagar.valor_a_receber "
+                        "contas_pagar.multa, contas_pagar.juros, contas_pagar.juros_pago, contas_pagar.desconto, "
+                        "contas_pagar.tipo_conta, contas_pagar.valor_a_receber "
                         "FROM contas_pagar INNER JOIN fornecedores ON fornecedores.codigo=contas_pagar.id_fornecedor "
                         f"WHERE contas_pagar.id_usuario = {session['user_id']} "
                         "ORDER BY contas_pagar.data_vencimento"
@@ -268,7 +269,7 @@ def obter_contas_pagar(tipo_consulta, tabela='', id_conta=0, id_fornecedor=0):
                 if tabela == 'contas_pagar':
                     query = ("SELECT cp.id, cp.valor, cp.data_vencimento, cp.data_lancamento, cp.numero_parcela, "
                              "cp.valor_parcela, cp.valor_pago, cp.valor_a_receber, cp.tipo_conta, cp.status, "
-                             "cp.desconto, cp.multa, cp.juros, f.codigo AS id_fornecedor, f.razao_social "
+                             "cp.desconto, cp.multa, cp.juros, cp.juros_pago, f.codigo AS id_fornecedor, f.razao_social "
                              "FROM contas_pagar AS cp "
                              "INNER JOIN fornecedores AS f "
                              "ON cp.id_fornecedor = f.codigo "

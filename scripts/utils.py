@@ -2,7 +2,7 @@ def calcular_juros(valor_parcela, vencimento):
     from datetime import date
 
     # taxa de juros diaria (exemplo: 0,33% ao dia) 0,0033
-    taxa_diaria = 0.33 / 100
+    taxa_diaria = 3 / 100  # 0.33 / 100 original
 
     # data_atual
     data_atual = date.today()

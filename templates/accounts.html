@@ -86,7 +86,8 @@
                         <th>Valor</th>
                         <th>Valor Pago</th>
                         <th>Vencimento</th>
-                        <th>Juros</th>
+                        <th>Juros Devido</th>
+                        <th>Juros Pago</th>
                         <th>Fornecedor</th>
                         <th>Status</th>
                         <th>Ações</th>
@@ -100,9 +101,10 @@
                         <td>{{ account.valor_pago }}</td>
                         <td>{{ account.data_vencimento.strftime('%d/%m/%Y') }}</td>
                         <td>{{ account.juros }}</td>
+                        <td>{{ account.juros_pago }}</td>
                         <td>{{ account.razao_social or '-' }}</td>
                         <td>
-                            <span style="display: inline-block; width: 85px; height: 30px; text-align: center; line-height: 23px;"
+                            <span style="display: inline-block; width: 95px; height: 30px; text-align: center; line-height: 23px;"
                                   class="badge bg-{{ 'secondary' if account.status == 'Pendente' else
                              'primary' if account.status == 'Parcial' else
                               'danger' if account.status == 'Vencida' else 'success' }}">
@@ -140,7 +142,6 @@
                                 </a>
                             </td>
                         </div>
-
                     </tr>
                     {% endfor %}
                 </tbody>
