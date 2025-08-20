@@ -414,6 +414,16 @@ def get_supplier_data(cnpj):
         return jsonify({"error": "Erro interno do servidor."}), 500
 
 
+@app.route('/get_account_info/<account_type>/<account_id>', methods=['GET'])
+def get_account_info(account_type, account_id):
+    detalhes_conta = {
+        'tipo_conta': account_type,
+        'id da conta': account_id
+    }
+
+    return jsonify(detalhes_conta)
+
+
 @app.route('/logout')
 def logout():
     session.clear()
