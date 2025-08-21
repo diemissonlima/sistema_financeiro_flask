@@ -17,7 +17,6 @@ document.querySelector('#form_fornecedor button[type="submit"]').addEventListene
             return response.json();
         })
         .then(data => {
-            console.log(data);
             document.getElementById('name').value = data.nome || '';
             document.getElementById('fantasia').value = data.fantasia || '';
             document.getElementById('email').value = data.email || '';

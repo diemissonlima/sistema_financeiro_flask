@@ -38,6 +38,7 @@ def criar_database():
                 desconto DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 multa DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 juros DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
+                juros_pago DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 valor_pago DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 valor_a_receber DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 tipo_conta VARCHAR(50) NOT NULL DEFAULT 'pagar',
@@ -79,12 +80,12 @@ def criar_database():
                 data_recebimento DATE NOT NULL,
                 descricao_pagamento VARCHAR(50) NOT NULL,
                 observacao VARCHAR(250) NULL DEFAULT NULL,
-                valor_parcela FLOAT(10,4) NULL DEFAULT NULL,
-                desconto FLOAT(10,4) NULL DEFAULT NULL,
-                multa FLOAT(10,4) NULL DEFAULT NULL,
-                juros FLOAT(10,4) NULL DEFAULT NULL,
-                recebido FLOAT(10,4) NULL DEFAULT NULL,
-                total_a_receber FLOAT(10,4) NULL DEFAULT NULL,
+                valor_parcela DECIMAL(10,2) NULL DEFAULT NULL,
+                desconto DECIMAL(10,2) NULL DEFAULT NULL,
+                multa DECIMAL(10,2) NULL DEFAULT NULL,
+                juros DECIMAL(10,2) NULL DEFAULT NULL,
+                recebido DECIMAL(10,2) NULL DEFAULT NULL,
+                total_a_receber DECIMAL(10,2) NULL DEFAULT NULL,
                 FOREIGN KEY (id_contas_pagar) REFERENCES contas_pagar(id)
             );"""
 
@@ -346,6 +347,9 @@ def atualizar_juros():
 
                     cursor.execute(query, data)
                     conn.commit()
+
+            else:
+                return
 
 
 def consultar_baixa(id_contas_pagar):

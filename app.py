@@ -416,12 +416,9 @@ def get_supplier_data(cnpj):
 
 @app.route('/get_account_info/<account_type>/<account_id>', methods=['GET'])
 def get_account_info(account_type, account_id):
-    detalhes_conta = {
-        'tipo_conta': account_type,
-        'id da conta': account_id
-    }
+    lista_baixas = database.consultar_baixa(account_id)
 
-    return jsonify(detalhes_conta)
+    return jsonify(lista_baixas)
 
 
 @app.route('/logout')

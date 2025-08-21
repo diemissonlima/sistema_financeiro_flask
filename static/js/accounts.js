@@ -47,3 +47,27 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener("change", aplicarFiltros);
   });
 });
+
+document.querySelectorAll("button[data-account-id]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const accountId = btn.dataset.accountId;
+        const tipoConta = btn.dataset.tipoConta;
+
+        fetch(`/get_account_info/${tipoConta}/${accountId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                const tbody = document.querySelector("#modalDetalhesParcela tbody");
+                tbody.innerHTML = "";
+
+                data.forEach(item => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${item.descricao_pagamento}</td>
+                            <td>R$ ${item.recebido.toFixed(2).replace(".", ",")}</td>
+                            <td>${new Date(item.data_recebimento).toLocaleDateString('pt-BR')}</td>
+                        </tr>`
+                })
+            })
+    });
+});

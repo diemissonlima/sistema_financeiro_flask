@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return isNaN(numero) ? 0 : numero;
     }
 
-
-
     function atualizarSaldo() {
         let vParcela = parseValor(parcela);
         let vDesconto = parseValor(desconto);
