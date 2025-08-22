@@ -431,12 +431,12 @@ def get_supplier_data(cnpj):
 
 @app.route('/get_account_info/<account_type>/<account_id>', methods=['GET'])
 def get_account_info(account_type, account_id):
-    lista_baixas = database.consultar_baixa(account_id)
+    info_conta = database.consultar_baixa(account_id)
 
-    for baixa in lista_baixas:
+    for baixa in info_conta:
         baixa['recebido'] = locale.currency(baixa['recebido'], grouping=True, symbol=True)
 
-    return jsonify(lista_baixas)
+    return jsonify(info_conta)
 
 
 @app.route('/logout')

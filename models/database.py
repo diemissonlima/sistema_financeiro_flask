@@ -382,6 +382,34 @@ def consultar_baixa(id_contas_pagar):
             if cursor.rowcount > 0:
                 lista_baixas = cursor.fetchall()
 
+                query = (
+                   """
+                        SELECT 
+                        l.id AS lancamento_id,
+                        l.descricao AS lancamento_descricao,
+                        l.valor_total AS lancamento_valor,
+                        l.data_lancamento,
+                        l.quantidade_parcelas,
+    
+                        f.codigo AS fornecedor_id,
+                        f.razao_social
+    
+                        FROM contas_pagar_recebimento r
+                        INNER JOIN contas_pagar c 
+                            ON r.id_contas_pagar = c.id
+                        INNER JOIN contas_pagar_lancamento l 
+                            ON c.id_lancamento = l.id
+                        INNER JOIN fornecedores f
+                            ON c.id_fornecedor = f.codigo
+                        WHERE c.id = %s;
+                    """
+                )
+
+                data = id_contas_pagar
+                cursor.execute(query, data)
+
+                info_lancamento = cursor.fetchall()
+
                 return lista_baixas
 
             return None
