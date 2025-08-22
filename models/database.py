@@ -27,6 +27,7 @@ def criar_database():
             CREATE TABLE IF NOT EXISTS contas_pagar (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 id_usuario INT(10),
+                id_lancamento INT NOT NULL,
                 descricao VARCHAR(255) NOT NULL,
                 valor DECIMAL(10, 2) NOT NULL,
                 data_lancamento DATE NOT NULL,
@@ -43,7 +44,8 @@ def criar_database():
                 valor_a_receber DECIMAL(10, 2) NOT NULL DEFAULT 0.0,
                 tipo_conta VARCHAR(50) NOT NULL DEFAULT 'pagar',
                 FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(codigo),
-                FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+                FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+                FOREIGN KEY (id_lancamento) REFERENCES contas_pagar_lancamento(id)
             );
             """
 
@@ -140,8 +142,23 @@ def criar_database():
             );
             """
 
+            sql_create_contas_pagar_lancamento = """
+                CREATE TABLE IF NOT EXISTS contas_pagar_lancamento (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                id_usuario INT(10),
+                id_fornecedor INT NOT NULL,
+                descricao VARCHAR(255) NOT NULL,
+                valor_total DECIMAL(10, 2) NOT NULL,
+                data_lancamento DATE NOT NULL,
+                quantidade_parcelas INT NOT NULL,
+                FOREIGN KEY (id_fornecedor) REFERENCES fornecedores(codigo),
+                FOREIGN KEY (id_usuario) REFERENCES usuario(id)
+            );
+            """
+
             cursor.execute(sql_create_usuario)
             cursor.execute(sql_create_fornecedores)
+            cursor.execute(sql_create_contas_pagar_lancamento)
             cursor.execute(sql_create_contas_pagar)
             cursor.execute(sql_create_contas_pagar_recebimento)
             cursor.execute(sql_create_contas_receber)

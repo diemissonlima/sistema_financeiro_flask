@@ -103,6 +103,8 @@ def dashboard():
                        f'WHERE id_usuario = {session["user_id"]} AND status IN ("Pendente", "Parcial", "Vencida")')
 
         total_pagar = cursor.fetchone()
+        if total_pagar['valor_pagar'] is None:
+            total_pagar['valor_pagar'] = 0
 
         cursor.execute('SELECT SUM(valor_parcela) - SUM(valor_pago) AS total FROM contas_receber '
                        f'WHERE id_usuario = {session["user_id"]} AND status IN ("Pendente", "Parcial")')
@@ -288,6 +290,17 @@ def new_account():
         with conn.cursor() as cursor:
             data_atual = date.today()
 
+            # insere no banco primeiro o lancamento pai da conta
+            query_lancamento = (
+                f'INSERT INTO contas_{account_type}_lancamento (id_usuario, id_fornecedor, descricao, valor_total,'
+                'data_lancamento, quantidade_parcelas) VALUES (%s, %s, %s, %s, %s, %s)'
+            )
+
+            dados_lancamento = session['user_id'], supplier_id, description, amount, data_lancamento, len(parcelas)
+
+            cursor.execute(query_lancamento, dados_lancamento)
+            id_lancamento = cursor.lastrowid
+
             for conta in lista_contas:
                 status_conta = 'Pendente'
                 data_vencimento = datetime.strptime(conta['data_vencimento'], "%Y-%m-%d").date()
@@ -299,17 +312,19 @@ def new_account():
 
                 valor_a_receber = conta['valor_parcela'] + conta['juros']
 
-                query = (
-                    f'INSERT INTO contas_{account_type} (id_usuario, descricao, valor, data_lancamento, data_vencimento, '
-                    'juros, status, id_fornecedor, numero_parcela, valor_parcela, valor_a_receber, tipo_conta)'
-                    'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+                # depois insere as parcelas
+                query_parcela = (
+                    f'INSERT INTO contas_{account_type} (id_usuario, id_lancamento, descricao, valor, data_lancamento, '
+                    'data_vencimento, juros, status, id_fornecedor, numero_parcela, valor_parcela, valor_a_receber, '
+                    'tipo_conta) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
                 )
 
-                data = conta['id_usuario'], conta['descricao'], conta['valor'], conta['data_lancamento'], \
-                    conta['data_vencimento'], conta['juros'], status_conta, conta['id_fornecedor'], \
-                    conta['numero_parcela'], conta['valor_parcela'], valor_a_receber, conta['tipo_conta']
+                dados_parcelas = conta['id_usuario'], id_lancamento, conta['descricao'], conta['valor'],\
+                    conta['data_lancamento'], conta['data_vencimento'], conta['juros'], status_conta, \
+                    conta['id_fornecedor'], conta['numero_parcela'], conta['valor_parcela'], valor_a_receber, \
+                    conta['tipo_conta']
 
-                cursor.execute(query, data)
+                cursor.execute(query_parcela, dados_parcelas)
                 conn.commit()
 
         flash('Lançamento cadastrado com sucesso!', 'success')
@@ -418,6 +433,9 @@ def get_supplier_data(cnpj):
 def get_account_info(account_type, account_id):
     lista_baixas = database.consultar_baixa(account_id)
 
+    for baixa in lista_baixas:
+        baixa['recebido'] = locale.currency(baixa['recebido'], grouping=True, symbol=True)
+
     return jsonify(lista_baixas)
 
 
@@ -430,4 +448,4 @@ def logout():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # app.run(host='192.168.100.156', port=5000, debug=True)
+    # app.run(host='192.168.100.160', port=5000, debug=True)

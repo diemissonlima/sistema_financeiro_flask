@@ -64,8 +64,15 @@ document.querySelectorAll("button[data-account-id]").forEach(btn => {
                     tbody.innerHTML += `
                         <tr>
                             <td>${item.descricao_pagamento}</td>
-                            <td>R$ ${item.recebido.toFixed(2).replace(".", ",")}</td>
+                            <td>${item.recebido}</td>
                             <td>${new Date(item.data_recebimento).toLocaleDateString('pt-BR')}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger" style="width: 95px"
+                                   data-id-recebimento=${item.id} data-id_conta=${item.id_contas_pagar}>
+                                    <i class="fas fa-xmark me-1"></i>
+                                    Estornar
+                                </button>
+                            </td>
                         </tr>`
                 })
             })

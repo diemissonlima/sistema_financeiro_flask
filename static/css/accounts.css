@@ -9,3 +9,25 @@
     background-color: white; /* para não ficar transparente */
     z-index: 2; /* para ficar acima do conteúdo */
 }
+
+#modalDetalhesParcela .modal-content {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    color: white;
+    overflow: hidden;
+}
+
+#modalDetalhesParcela .modal-header {
+    border: none;
+    padding: 2rem 2rem 1rem 2rem;
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%);
+    position: relative;
+}
+
+#modalDetalhesParcela .modal-header, .p {
+    margin: 0.5rem 0 0 0;
+    color: white;
+    font-size: 0.875rem;
+}

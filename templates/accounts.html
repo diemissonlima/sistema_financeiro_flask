@@ -164,35 +164,293 @@
     </div>
 </div>
 
-<!-- Modal de Detalhes da Parcela -->
+<!-- Modal de Detalhes da Parcela  -->
 <div class="modal fade" id="modalDetalhesParcela" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content bg-dark text-white rounded-4 shadow-lg border border-secondary">
-            <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title fw-bold" id="modalLabel">Detalhes da Parcela</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <div class="modal-content">
+            <!-- Header com design moderno -->
+            <div class="modal-header">
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    margin-bottom: 1.5rem;
+                ">
+                    <div style="
+                        width: 40px;
+                        height: 40px;
+                        background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.2rem;
+                    ">💳</div>
+                    <div>
+                        <h5 style="
+                            margin: 0;
+                            font-size: 1.25rem;
+                            font-weight: 700;
+                            color: #f1f5f9;
+                        ">Detalhes da Conta</h5>
+                        <p style="
+                            margin: 0;
+                            color: #94a3b8;
+                            font-size: 0.875rem;
+                        ">Informações da Conta</p>
+                    </div>
+                </div>
             </div>
-        <div class="modal-body pt-3">
-        <div class="table-responsive">
-          <table class="table table-hover table-dark align-middle mb-0">
-            <thead class="table-secondary text-dark">
-              <tr>
-                <th>Tipo Pagamento</th>
-                <th>Valor R$</th>
-                <th>Data Pagamento</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr style="cursor: pointer;">
 
-              </tr>
-            </tbody>
-          </table>
+            <!-- Seção de Informações Principais -->
+            <div style="padding: 0 2rem;" class="mt-4">
+                <div style="
+                    background: rgba(255, 255, 255, 0.05);
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);">
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 0.75rem;
+                                margin-bottom: 0.5rem;
+                            ">
+                                <div style="
+                                    width: 8px;
+                                    height: 8px;
+                                    background: #10b981;
+                                    border-radius: 50%;
+                                    box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+                                "></div>
+                                <label style="
+                                    color: #e2e8f0;
+                                    font-weight: 600;
+                                    font-size: 0.875rem;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.05em;
+                                ">Fornecedor</label>
+                            </div>
+                            <input type="text" value="ENERGISA" readonly style="
+                                background: rgba(255, 255, 255, 0.1);
+                                border: 1px solid rgba(255, 255, 255, 0.2);
+                                border-radius: 12px;
+                                color: white;
+                                padding: 0.875rem 1rem;
+                                font-size: 1.125rem;
+                                font-weight: 600;
+                                width: 100%;
+                                transition: all 0.3s ease;
+                            " onfocus="this.style.borderColor='#3b82f6'; this.style.boxShadow='0 0 0 3px rgba(59, 130, 246, 0.1)'"
+                               onblur="this.style.borderColor='rgba(255, 255, 255, 0.2)'; this.style.boxShadow='none'">
+                        </div>
+
+                        <div class="col-md-3">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                margin-bottom: 0.5rem;
+                            ">
+                                <span style="font-size: 1rem;">📅</span>
+                                <label style="
+                                    color: #cbd5e1;
+                                    font-weight: 500;
+                                    font-size: 0.875rem;
+                                ">Data Lançamento</label>
+                            </div>
+                            <input type="text" value="01/01/2025" readonly style="
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 1px solid rgba(255, 255, 255, 0.15);
+                                border-radius: 10px;
+                                color: #f1f5f9;
+                                padding: 0.75rem;
+                                width: 100%;
+                                font-weight: 500;
+                            ">
+                        </div>
+
+                        <div class="col-md-3">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                margin-bottom: 0.5rem;
+                            ">
+                                <span style="font-size: 1rem;">📄</span>
+                                <label style="
+                                    color: #cbd5e1;
+                                    font-weight: 500;
+                                    font-size: 0.875rem;
+                                ">Documento</label>
+                            </div>
+                            <input type="text" value="54725" readonly style="
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 1px solid rgba(255, 255, 255, 0.15);
+                                border-radius: 10px;
+                                color: #f1f5f9;
+                                padding: 0.75rem;
+                                width: 100%;
+                                font-weight: 500;
+                            ">
+                        </div>
+
+                        <div class="col-md-3">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                margin-bottom: 0.5rem;
+                            ">
+                                <span style="font-size: 1rem;">💰</span>
+                                <label style="
+                                    color: #cbd5e1;
+                                    font-weight: 500;
+                                    font-size: 0.875rem;
+                                ">Valor</label>
+                            </div>
+                            <input type="text" value="R$ 5.000,00" readonly style="
+                                background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+                                border: 1px solid rgba(16, 185, 129, 0.3);
+                                border-radius: 10px;
+                                color: #10b981;
+                                padding: 0.75rem;
+                                width: 100%;
+                                font-weight: 700;
+                                font-size: 1.1rem;
+                            ">
+                        </div>
+
+                        <div class="col-md-3">
+                            <div style="
+                                display: flex;
+                                align-items: center;
+                                gap: 0.5rem;
+                                margin-bottom: 0.5rem;
+                            ">
+                                <span style="font-size: 1rem;">🔢</span>
+                                <label style="
+                                    color: #cbd5e1;
+                                    font-weight: 500;
+                                    font-size: 0.875rem;
+                                ">Nº de Parcelas</label>
+                            </div>
+                            <input type="text" value="5" readonly style="
+                                background: rgba(255, 255, 255, 0.08);
+                                border: 1px solid rgba(255, 255, 255, 0.15);
+                                border-radius: 10px;
+                                color: #f1f5f9;
+                                padding: 0.75rem;
+                                width: 100%;
+                                font-weight: 500;
+                            ">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seção de Detalhes de Pagamento -->
+            <div style="padding: 2rem;">
+                <div style="
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    margin-bottom: 1.5rem;
+                ">
+                    <div style="
+                        width: 40px;
+                        height: 40px;
+                        background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 1.2rem;
+                    ">💳</div>
+                    <div>
+                        <h5 style="
+                            margin: 0;
+                            font-size: 1.25rem;
+                            font-weight: 700;
+                            color: #f1f5f9;
+                        ">Detalhes de Pagamento</h5>
+                        <p style="
+                            margin: 0;
+                            color: #94a3b8;
+                            font-size: 0.875rem;
+                        ">Histórico de transações</p>
+                    </div>
+                </div>
+
+                <div style="
+                    background: rgba(255, 255, 255, 0.03);
+                    border-radius: 16px;
+                    overflow: hidden;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                ">
+                    <div class="table-responsive">
+                        <table class="table mb-0" style="
+                            background: transparent;
+                            color: white;
+                        ">
+                            <thead style="
+                                background: linear-gradient(90deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+                                border: none;
+                            ">
+                                <tr>
+                                    <th style="
+                                        color: black;
+                                        font-weight: 600;
+                                        padding: 1rem 1.5rem;
+                                        border: none;
+                                        font-size: 0.875rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                    ">💳 Tipo Pagamento</th>
+                                    <th style="
+                                        color: black;
+                                        font-weight: 600;
+                                        padding: 1rem 1.5rem;
+                                        border: none;
+                                        font-size: 0.875rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                    ">💰 Valor</th>
+                                    <th style="
+                                        color: black;
+                                        font-weight: 600;
+                                        padding: 1rem 1.5rem;
+                                        border: none;
+                                        font-size: 0.875rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                    ">📅 Data Pagamento</th>
+                                    <th style="
+                                        color: black;
+                                        font-weight: 600;
+                                        padding: 1rem 1.5rem;
+                                        border: none;
+                                        font-size: 0.875rem;
+                                        text-transform: uppercase;
+                                        letter-spacing: 0.05em;
+                                    ">📅 Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody style="
+                                border: none;
+                            ">
+                                <!-- detalhes carregados via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
     </div>
 </div>
+
 
 <script src="{{ url_for('static', filename='js/accounts.js') }}"></script>
 {% endblock %}
